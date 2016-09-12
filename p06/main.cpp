@@ -4,6 +4,9 @@
 using namespace std;
 
 #define REP(i, n) for (int i = 0; i < (n); ++i)
+#define FOR(i, s, n) for (int i = (s); i < (n); ++i)
+#define min(a, b) ((a) < (b) ? (a) : (b))
+#define max(a, b) ((a) > (b) ? (a) : (b))
 
 int N;
 int p[5000];
@@ -13,17 +16,16 @@ int main() {
 		cin >> N;
 		if (N == 0) break;
 		REP(i, N) cin >> p[i];
-		int res = 0;
-		if (p[0] > p[1]) {
-			res += p[0] - p[1];
-			p[0] = p[1];
+		int res = 100000;
+		REP(k, 4) {
+			int cnt = k, t = min(k, p[0]);
+			REP(i, N - 1) {
+				cnt += (p[i] - t) * 2;
+				t = min(p[i + 1], p[i] - t);
+			}
+			cnt += max(0, p[N - 1] - t);
+			res = min(res, cnt);
 		}
-		REP(i, N - 1) {
-			if (p[i] <= 0) continue;
-			res += p[i] * 2;
-			p[i + 1] -= p[i];
-		}
-		if (p[N - 1] > 0) res += p[N - 1];
 		cout << res << endl;
 	}
 	return 0;
